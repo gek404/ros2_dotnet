@@ -32,24 +32,28 @@ from rosidl_parser.definition import Array
 
 @{
 msg_typename = idl_structure_type_to_c_typename(message.structure.namespaced_type)
+parts_for_path = include_parts[:-1]
+parts_for_path.append('detail')
+parts_for_path.append(include_parts[-1])
 include_path = "/".join(include_parts)
+include_path_2 = "/".join(parts_for_path)
 have_not_included_string = True
 have_not_included_arrays = True
 }@
-#include <@(include_path)__struct.h>
-#include <@(include_path)__functions.h>
+#include <@(include_path_2)__struct.h>
+#include <@(include_path_2)__functions.h>
 @[for member in message.structure.members]@
 @[  if isinstance(member.type, AbstractGenericString) or (isinstance(member.type, AbstractSequence) and isinstance(member.type.value_type, AbstractString)) and have_not_included_string]@
 @{have_not_included_string = False}@
-#include <rosidl_generator_c/string.h>
-#include <rosidl_generator_c/string_functions.h>
+#include <rosidl_runtime_c/string.h>
+#include <rosidl_runtime_c/string_functions.h>
 
 @[  elif isinstance(member.type, (AbstractSequence, Array)) and isinstance(member.type.value_type, BasicType) and have_not_included_arrays]@
 @{have_not_included_arrays = False}@
-#include <rosidl_generator_c/primitives_sequence.h>
-#include <rosidl_generator_c/primitives_sequence_functions.h>
+#include <rosidl_runtime_c/primitives_sequence.h>
+#include <rosidl_runtime_c/primitives_sequence_functions.h>
 @[  elif isinstance(member.type, (AbstractSequence, Array)) and isinstance(member.type.value_type, (NamedType, NamespacedType))]@
-#include <@("/".join(member.type.value_type.namespaces))/@(convert_camel_case_to_lower_case_underscore(member.type.value_type.name))__functions.h>
+#include <@("/".join(member.type.value_type.namespaces))/detail/@(convert_camel_case_to_lower_case_underscore(member.type.value_type.name))__functions.h>
 @[  end if]@
 @[end for]@
 
@@ -75,7 +79,7 @@ void @(msg_typename)_native_write_field_@(member.name)(void *message_handle, @(g
 {
   @(msg_typename) *ros_message = (@(msg_typename) *)message_handle;
 @[    if  isinstance(member.type, AbstractGenericString)]@
-  rosidl_generator_c__String__assign(
+  rosidl_runtime_c__String__assign(
     &ros_message->@(member.name), value);
 @[    else]@
   ros_message->@(member.name) = value;
@@ -98,8 +102,8 @@ bool @(msg_typename)_native_write_field_@(member.name)(@(get_c_type(member.type.
 @[    elif isinstance(member.type, AbstractSequence)]@
   size_t previous_sequence_size = ros_message->@(member.name).size;
   if (previous_sequence_size != (size_t)size && previous_sequence_size != 0)
-    rosidl_generator_c__@(member.type.value_type.typename)__Sequence__fini(&ros_message->@(member.name));
-  if (!rosidl_generator_c__@(member.type.value_type.typename)__Sequence__init(&ros_message->@(member.name), size))
+    rosidl_runtime_c__@(member.type.value_type.typename)__Sequence__fini(&ros_message->@(member.name));
+  if (!rosidl_runtime_c__@(member.type.value_type.typename)__Sequence__init(&ros_message->@(member.name), size))
     return false;
   @(get_c_type(member.type.value_type)) *dest = ros_message->@(member.name).data;
 @[    end if]@
@@ -135,9 +139,9 @@ bool @(msg_typename)_native_write_field_@(member.name)(char *value, int index, v
 @[    if isinstance(member.type, Array)]@
   if (index >= @(member.type.size))
       return false;
-  rosidl_generator_c__String__assign(&ros_message->@(member.name)[index], value);
+  rosidl_runtime_c__String__assign(&ros_message->@(member.name)[index], value);
 @[    elif isinstance(member.type, AbstractSequence)]@
-  rosidl_generator_c__String__assign(&ros_message->@(member.name).data[index], value);
+  rosidl_runtime_c__String__assign(&ros_message->@(member.name).data[index], value);
 @[    end if]@
   return true;
 }

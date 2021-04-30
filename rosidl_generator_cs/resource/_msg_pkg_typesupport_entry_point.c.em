@@ -20,14 +20,14 @@
 
 @{
 static_includes = set([
-    '#include <rosidl_generator_c/message_type_support_struct.h>',
-    '#include <rosidl_generator_c/visibility_control.h>',
+    '#include <rosidl_runtime_c/message_type_support_struct.h>',
+    '#include <rosidl_runtime_c/visibility_control.h>',
 ])
 for spec, subfolder in message_specs:
   if subfolder == 'msg':
-    static_includes.add('#include <rosidl_generator_c/message_type_support_struct.h>')
+    static_includes.add('#include <rosidl_runtime_c/message_type_support_struct.h>')
   elif subfolder == 'srv' or subfolder == 'action':
-    static_includes.add('#include <rosidl_generator_c/service_type_support_struct.h>')
+    static_includes.add('#include <rosidl_runtime_c/service_type_support_struct.h>')
 }@
 @[for value in sorted(static_includes)]@
 @(value)
@@ -38,7 +38,7 @@ includes = {}
 for spec, subfolder in message_specs:
   type_name = spec.base_type.type
   module_name = convert_camel_case_to_lower_case_underscore(type_name)
-  key = '%s/%s/%s' % (spec.base_type.pkg_name, subfolder, module_name)
+  key = '%s/%s/detail/%s' % (spec.base_type.pkg_name, subfolder, module_name)
   includes[key + '_support'] = '#include <%s__type_support.h>' % key
   includes[key + '_struct'] = '#include <%s__struct.h>' % key
   includes[key + '_functions'] = '#include <%s__functions.h>' % key
@@ -46,7 +46,7 @@ for spec, subfolder in message_specs:
 for spec, subfolder in service_specs:
   type_name = convert_camel_case_to_lower_case_underscore(spec.srv_name)
   module_name = convert_camel_case_to_lower_case_underscore(type_name)
-  key = '%s/%s/%s' % (spec.pkg_name, subfolder, module_name)
+  key = '%s/%s/detail/%s' % (spec.pkg_name, subfolder, module_name)
   includes[key] = '#include <%s.h>' % key
 }@
 @[for v in sorted(includes.values())]@

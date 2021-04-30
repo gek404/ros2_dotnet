@@ -12,9 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-find_package(rmw_implementation_cmake REQUIRED)
 find_package(rmw REQUIRED)
-find_package(rosidl_generator_c REQUIRED)
+find_package(rosidl_runtime_c REQUIRED)
 find_package(rosidl_typesupport_c REQUIRED)
 find_package(rosidl_typesupport_interface REQUIRED)
 
@@ -23,6 +22,8 @@ find_package(PythonInterp 3.5 REQUIRED)
 find_package(ament_cmake_export_assemblies REQUIRED)
 find_package(dotnet_cmake_module REQUIRED)
 find_package(DotNETExtra REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+
 
 # Get a list of typesupport implementations from valid rmw implementations.
 rosidl_generator_cs_get_typesupports(_typesupport_impls)
@@ -54,7 +55,7 @@ foreach(_idl_file ${rosidl_generate_interfaces_ABS_IDL_FILES})
   get_filename_component(_ext "${_idl_file}" EXT)
   string_camel_case_to_lower_case_underscore("${_msg_name}" _module_name)
 
-  #message("Appending ${_output_path}/${_parent_folder}/_${_module_name}.cs")
+  #message("___Appending ${_output_path}/${_parent_folder}/_${_module_name}.cs")
 
   if(_parent_folder STREQUAL "msg")
     list(APPEND _generated_msg_cs_files
@@ -149,9 +150,14 @@ set_property(
   SOURCE
   ${_generated_msg_cs_files} ${_generated_msg_c_files} ${_generated_msg_c_ts_files}
   PROPERTY GENERATED 1)
-
-#rosidl_target_interfaces(${_target_name_lib}
-#    ${rosidl_generate_interfaces_TARGET} rosidl_typesupport_c)
+  
+target_link_libraries(${_target_name_lib}
+  ${rosidl_generate_interfaces_TARGET}__rosidl_generator_c)
+add_dependencies(
+  ${_target_name_lib}
+  ${rosidl_generate_interfaces_TARGET}${_target_suffix}
+  ${rosidl_generate_interfaces_TARGET}__rosidl_typesupport_c
+)
 
 foreach(_generated_msg_c_ts_file ${_generated_msg_c_ts_files})
   get_filename_component(_full_folder "${_generated_msg_c_ts_file}" DIRECTORY)
@@ -234,11 +240,14 @@ foreach(_generated_msg_c_ts_file ${_generated_msg_c_ts_files})
   #message("Link libraries: ${PROJECT_NAME}__${_typesupport_impl}")
   target_link_libraries(
     ${_target_name}
+    ${_target_name_lib}
     ${PROJECT_NAME}__${_typesupport_impl}
     ${_extension_link_flags}
+    ${PROJECT_NAME}__rosidl_generator_c
   )
+    
   rosidl_target_interfaces(${_target_name}
-    ${PROJECT_NAME} rosidl_typesupport_c)
+    ${rosidl_generate_interfaces_TARGET}  rosidl_typesupport_c)
 
   target_include_directories(${_target_name}
     PUBLIC
@@ -247,7 +256,7 @@ foreach(_generated_msg_c_ts_file ${_generated_msg_c_ts_files})
   )
 
   ament_target_dependencies(${_target_name}
-    "rosidl_generator_c"
+    "rosidl_runtime_c"
     "rosidl_typesupport_c"
     "rosidl_typesupport_interface"
   )
@@ -259,12 +268,13 @@ foreach(_generated_msg_c_ts_file ${_generated_msg_c_ts_files})
 
   add_dependencies(${_target_name}
     ${rosidl_generate_interfaces_TARGET}__${_typesupport_impl}
+    ${rosidl_generate_interfaces_TARGET}__rosidl_typesupport_c
   )
-  ament_target_dependencies(${_target_name}
-    "rosidl_generator_c"
-    "rosidl_generator_cs"
-    "${PROJECT_NAME}__rosidl_generator_c"
-  )
+  
+ ament_target_dependencies(${_target_name}
+   "rosidl_runtime_c"
+   "rosidl_generator_cs"
+ )
 
   if(NOT rosidl_generate_interfaces_SKIP_INSTALL)
     install(TARGETS ${_target_name}

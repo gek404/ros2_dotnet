@@ -36,9 +36,10 @@ class UnityROS2LibCopier:
             'test_msgs',
             'action_msgs',
             'unique_identifier_msgs',
-            'can_msgs',
-            'canopen_msgs',
-            'swarm_msgs',
+            'marker_msgs',
+            'marker_planner_msgs',
+            'gis_rtk_msgs',
+            'rtp_msgs',
             'tf2_msgs',
         ]
 

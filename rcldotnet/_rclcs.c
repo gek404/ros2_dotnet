@@ -23,7 +23,7 @@ limitations under the License.
 #include <rcl/rcl.h>
 #include <rcl/time.h>
 #include <rcl/validate_topic_name.h>
-#include <rcl_interfaces/msg/parameter_type__struct.h>
+#include <rcl_interfaces/msg/detail/parameter_type__struct.h>
 #include <rcutils/allocator.h>
 #include <rcutils/format_string.h>
 #include <rcutils/strdup.h>
@@ -36,7 +36,7 @@ limitations under the License.
 #include <rmw/validate_namespace.h>
 #include <rmw/validate_node_name.h>
 #include <rmw/qos_profiles.h>
-#include <rosidl_generator_c/message_type_support_struct.h>
+#include <rosidl_runtime_c/message_type_support_struct.h>
 #include <signal.h>
 
 ROSIDL_GENERATOR_C_EXPORT

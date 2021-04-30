@@ -18,16 +18,21 @@ from rosidl_generator_c import idl_structure_type_to_c_typename
 
 #include <stdbool.h>
 #include <stdint.h>
-#include <rosidl_generator_c/message_type_support_struct.h>
-#include <rosidl_generator_c/visibility_control.h>
+#include <rosidl_runtime_c/message_type_support_struct.h>
+#include <rosidl_runtime_c/visibility_control.h>
+
 
 @{
 msg_typename = idl_structure_type_to_c_typename(message.structure.namespaced_type)
 key = "/".join(include_parts)
+parts_for_path = include_parts[:-1]
+parts_for_path.append('detail')
+parts_for_path.append(include_parts[-1])
+include_path_2 = "/".join(parts_for_path)
 includes = {}
-includes[key + '_support'] = '#include <%s__type_support.h>' % key
-includes[key + '_struct'] = '#include <%s__struct.h>' % key
-includes[key + '_functions'] = '#include <%s__functions.h>' % key
+includes[key + '_support'] = '#include <%s__type_support.h>' % include_path_2
+includes[key + '_struct'] = '#include <%s__struct.h>' % include_path_2
+includes[key + '_functions'] = '#include <%s__functions.h>' % include_path_2
 }@
 @[for v in sorted(includes.values())]@
 @(v)

@@ -1,11 +1,11 @@
-﻿repositories:
+repositories:
 
   # ros2_dotnet
 
   ros2/rosidl_defaults:
     type: git
     url: https://github.com/ros2/rosidl_defaults.git
-    version: dashing
+    version: foxy
   ament_dotnet/ament_cmake_export_assemblies:
     type: git
     url: https://github.com/esteve/ament_cmake_export_assemblies.git
@@ -16,7 +16,7 @@
     version: master
   dotnet/ros2_dotnet:
     type: git
-    url: https://github.com/samiamlabs/ros2_dotnet
+    url: https://github.com/gek/ros2_dotnet
     version: master
 
   # interfaces 
@@ -24,25 +24,24 @@
   interfaces/common_interfaces:
     type: git
     url: https://github.com/ros2/common_interfaces.git
-    version: dashing
+    version: foxy
   interfaces/unique_identifier_msgs:
     type: git
     url: https://github.com/ros2/unique_identifier_msgs.git
-    version: dashing
+    version: foxy
   interfaces/rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
-    version: dashing
+    version: foxy
   interfaces/rcldotnet_custom_interfaces:
     type: git
     url: https://github.com/DynoRobotics/rcldotnet_custom_interfaces.git 
     version: master
 
-  # NOTE(sam): Having some issues getting this to build without poco
-  # interfaces/geometry2:
-  #   type: git
-  #   url: https://github.com/ros2/geometry2.git
-  #   version: dashing
+  interfaces/geometry2:
+    type: git
+    url: https://github.com/ros2/geometry2.git
+    version: foxy
 
 
 

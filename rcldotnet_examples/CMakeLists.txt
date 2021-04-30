@@ -17,7 +17,7 @@ find_package(nav_msgs REQUIRED)
 find_package(dotnet_cmake_module REQUIRED)
 find_package(rosidl_generator_cs REQUIRED)
 
-set(CSHARP_TARGET_FRAMEWORK "netcoreapp2.0")
+set(CSHARP_TARGET_FRAMEWORK "netcoreapp5.0")
 find_package(DotNETExtra REQUIRED)
 
 set(_assemblies_dep_dlls

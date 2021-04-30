@@ -7,7 +7,7 @@ find_package(dotnet_cmake_module REQUIRED)
 find_package(ament_cmake_export_assemblies REQUIRED)
 find_package(dotnet_cmake_module REQUIRED)
 
-set(CSHARP_TARGET_FRAMEWORK "netcoreapp2.0")
+set(CSHARP_TARGET_FRAMEWORK "netcoreapp5.0")
 find_package(DotNETExtra REQUIRED)
 
 set(CS_SOURCES

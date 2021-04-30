@@ -6,6 +6,7 @@ project(rosidl_generator_cs)
 find_package(ament_cmake REQUIRED)
 
 ament_export_dependencies(ament_cmake)
+ament_export_dependencies(ament_cmake_core)
 ament_export_dependencies(rmw)
 ament_export_dependencies(rosidl_cmake)
 

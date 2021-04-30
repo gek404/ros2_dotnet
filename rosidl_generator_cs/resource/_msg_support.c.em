@@ -18,10 +18,10 @@
 #include <stdint.h>
 #include <string.h>
 
-#include <rosidl_generator_c/visibility_control.h>
+#include <rosidl_runtime_c/visibility_control.h>
 
-#include <@(spec.base_type.pkg_name)/@(subfolder)/@(module_name)__struct.h>
-#include <@(spec.base_type.pkg_name)/@(subfolder)/@(module_name)__functions.h>
+#include <@(spec.base_type.pkg_name)/@(subfolder)/detail/@(module_name)__struct.h>
+#include <@(spec.base_type.pkg_name)/@(subfolder)/detail/@(module_name)__functions.h>
 
 @{
 have_not_included_primitive_arrays = True
@@ -31,13 +31,13 @@ nested_array_dict = {}
 @[for field in spec.fields]@
 @[  if field.type.is_array and have_not_included_primitive_arrays]@
 @{have_not_included_primitive_arrays = False}@
-#include <rosidl_generator_c/primitives_sequence.h>
-#include <rosidl_generator_c/primitives_sequence_functions.h>
+#include <rosidl_runtime_c/primitives_sequence.h>
+#include <rosidl_runtime_c/primitives_sequence_functions.h>
 @[  end if]@
 @[  if field.type.type == 'string' and have_not_included_string]@
 @{have_not_included_string = False}@
-#include <rosidl_generator_c/string.h>
-#include <rosidl_generator_c/string_functions.h>
+#include <rosidl_runtime_c/string.h>
+#include <rosidl_runtime_c/string_functions.h>
 
 @[  end if]@
 @{
@@ -48,7 +48,7 @@ if not field.type.is_primitive_type() and field.type.is_array:
 @[if nested_array_dict != {}]@
 // Nested array functions includes
 @[  for key in nested_array_dict]@
-#include <@(nested_array_dict[key])/msg/@convert_camel_case_to_lower_case_underscore(key)__functions.h>
+#include <@(nested_array_dict[key])/msg/detail/@convert_camel_case_to_lower_case_underscore(key)__functions.h>
 @[  end for]@
 // end nested array functions include
 @[end if]@

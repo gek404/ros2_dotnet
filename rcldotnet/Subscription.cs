@@ -42,8 +42,14 @@ namespace rclcs
 
         public void TriggerCallback(Message message)
         {
-            message.ReadNativeMessage();
-            callback((T)message);
+            try
+            {
+                message.ReadNativeMessage();
+                callback((T)message);
+            }
+            catch (InvalidOperationException exception)
+            { 
+            }
         }
 
         public Subscription(string topic, Node node, Action<T> callback, QualityOfServiceProfile qualityOfServiceProfile = null)

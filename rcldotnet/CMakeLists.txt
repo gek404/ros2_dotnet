@@ -23,7 +23,7 @@ find_package(rosidl_generator_c REQUIRED)
 
 find_package(dotnet_cmake_module REQUIRED)
 
-set(CSHARP_TARGET_FRAMEWORK "netcoreapp2.0")
+set(CSHARP_TARGET_FRAMEWORK "netcoreapp5.0")
 find_package(DotNETExtra REQUIRED)
 
 find_package(rcldotnet_common REQUIRED)
