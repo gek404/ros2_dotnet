@@ -33,11 +33,6 @@ repositories:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
     version: foxy
-  interfaces/rcldotnet_custom_interfaces:
-    type: git
-    url: https://github.com/DynoRobotics/rcldotnet_custom_interfaces.git 
-    version: master
-
   interfaces/geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git
