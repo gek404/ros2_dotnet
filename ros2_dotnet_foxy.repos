@@ -16,8 +16,8 @@ repositories:
     version: master
   dotnet/ros2_dotnet:
     type: git
-    url: https://github.com/gek/ros2_dotnet
-    version: master
+    url: https://github.com/gek404/ros2_dotnet.git 
+    version: foxy
 
   # interfaces 
 
